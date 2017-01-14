@@ -43,7 +43,6 @@ int CBank::GetTotalBalance()
 	return m_totalBalance;
 }
 
-
 void CBank::SetTotalBalance(int value)
 {
 	m_totalBalance = value;
@@ -51,5 +50,5 @@ void CBank::SetTotalBalance(int value)
 
 void CBank::SomeLongOperations()
 {
-	// TODO
+	Sleep(LONG_OPERATIONS_DURATION);
 }
