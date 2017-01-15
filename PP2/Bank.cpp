@@ -7,11 +7,17 @@ CBank::CBank()
 }
 
 
+void CBank::WaitForClients()
+{
+	WaitForMultipleObjects(m_handles.size(), m_handles.data(), TRUE, INFINITE);
+}
+
 CBankClient* CBank::CreateClient()
 {
 	unsigned clientId = unsigned(m_clients.size());
 	CBankClient* client = new CBankClient(this, clientId);
 	m_clients.push_back(*client);
+	m_handles.push_back(CreateThread(NULL, 0, client->ThreadFunction, this, 0, NULL));
 	return client;
 }
 
@@ -43,10 +49,12 @@ int CBank::GetTotalBalance()
 	return m_totalBalance;
 }
 
+
 void CBank::SetTotalBalance(int value)
 {
 	m_totalBalance = value;
 }
+
 
 void CBank::SomeLongOperations()
 {

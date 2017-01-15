@@ -8,9 +8,10 @@ int main()
 	CBankClient* client1 = bank->CreateClient();
 	CBankClient* client2 = bank->CreateClient();
 
-	// TODO: WaitForMultipleObjects
+	//fixed TODO: WaitForMultipleObjects
 	while (true)
 	{
+		bank->WaitForClients();
 	}
 
     return 0;
