@@ -21,5 +21,5 @@ private:
 	void SetTotalBalance(int value);
 	void SomeLongOperations();
 
-	const float LONG_OPERATIONS_DURATION = 5.f;
+	const float LONG_OPERATIONS_DURATION = 3.f;
 };

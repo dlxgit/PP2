@@ -17,7 +17,7 @@ CBankClient* CBank::CreateClient()
 	unsigned clientId = unsigned(m_clients.size());
 	CBankClient* client = new CBankClient(this, clientId);
 	m_clients.push_back(*client);
-	m_handles.push_back(CreateThread(NULL, 0, client->ThreadFunction, this, 0, NULL));
+	m_handles.push_back(CreateThread(NULL, 0, client->ThreadFunction, client, 0, NULL));
 	return client;
 }
 
