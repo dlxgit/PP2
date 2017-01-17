@@ -23,55 +23,40 @@ void ShowUsageInfo()
 	cout << "4 - event" << endl;
 }
 
-ISyncPrimitive & CreatePrimitiveFromParam(size_t param)
-{
-	switch (param)
-	{
-	case 1:
-		return CCriticalSection();
-	case 2:
-		return CMutex();
-	case 3:
-		return CEvent();
-	default:
-		return CEmptyPrimitive();
-	}
-}
 
 bool HandleUserInput(int argc, char * argv[], size_t & nClients, size_t & primitiveType)
 {
-	if (argc > 3 || argc == 1 ||argc == 2 && argv[1] == "/?")
+	if (argc > 3 || argc == 1 || argc == 2 && argv[1] == "/?")
 	{
 		ShowUsageInfo();
 		return false;
 	}
 
-	if (argc == 2)
+	try
 	{
-
-		try
+		nClients = std::stoi(argv[1]);
+		primitiveType = std::stoi(argv[1]);
+		if (nClients < 1 || nClients > 4)
 		{
-			nClients = std::stoi(argv[1]);
-			if (nClients < 1 || nClients > 4)
-			{
-				throw std::invalid_argument("incorrect value of syncPrimitiveType");
-			}
+			throw std::invalid_argument("incorrect value of syncPrimitiveType");
 		}
-		catch (const std::exception & ex)
-		{
-			cout << ex.what() << endl;
-			return false;
-		}
+	}
+	catch (const std::exception & ex)
+	{
+		cout << ex.what() << endl;
+		return false;
+	}
+	if (argc == 2 || argc == 3)
+	{
 		return true;
 	}
-	return true;
 }
 
 int main(int argc, char * argv[])
 {	
-// 	argc = 3;
-// 	argv[1] = "3";
-// 	argv[2] = "2";
+	argc = 3;
+	argv[1] = "3";
+	argv[2] = "2";
 	size_t nClients;
 	size_t primitiveType;
 	
@@ -81,7 +66,7 @@ int main(int argc, char * argv[])
 		return 1;
 	}
 
-	CBank bank(nClients, CreatePrimitiveFromParam(primitiveType));
+	CBank bank(nClients, primitiveType);
 	
 	bank.WaitForClients();
 

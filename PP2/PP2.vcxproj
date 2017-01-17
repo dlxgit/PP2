@@ -147,6 +147,12 @@
   <ItemGroup>
     <ClInclude Include="Bank.h" />
     <ClInclude Include="BankClient.h" />
+    <ClInclude Include="CCriticalSection.h" />
+    <ClInclude Include="CEmptyPrimitive.h" />
+    <ClInclude Include="CEvent.h" />
+    <ClInclude Include="CMutex.h" />
+    <ClInclude Include="CSemaphore.h" />
+    <ClInclude Include="ISyncPrimitive.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
