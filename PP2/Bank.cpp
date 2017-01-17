@@ -6,7 +6,6 @@ CBank::CBank()
 	m_totalBalance = 0;
 }
 
-
 void CBank::WaitForClients()
 {
 	WaitForMultipleObjects(m_handles.size(), m_handles.data(), TRUE, INFINITE);
