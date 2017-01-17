@@ -38,14 +38,20 @@ bool HandleUserInput(int argc, char * argv[], size_t & nClients, size_t & primit
 		primitiveType = std::stoi(argv[1]);
 		if (nClients < 1 || nClients > 4)
 		{
-			throw std::invalid_argument("incorrect value of syncPrimitiveType");
+			throw std::logic_error("incorrect value of syncPrimitiveType");
 		}
 	}
-	catch (const std::exception & ex)
+	catch (const std::invalid_argument & ex)
 	{
 		cout << ex.what() << endl;
 		return false;
 	}
+	catch (const std::logic_error & ex)
+	{
+		cout << ex.what() << endl;
+		return false;
+	}
+
 	if (argc == 2 || argc == 3)
 	{
 		return true;
@@ -54,13 +60,9 @@ bool HandleUserInput(int argc, char * argv[], size_t & nClients, size_t & primit
 
 int main(int argc, char * argv[])
 {	
-	argc = 3;
-	argv[1] = "3";
-	argv[2] = "2";
 	size_t nClients;
 	size_t primitiveType;
 	
-
 	if (!HandleUserInput(argc, argv, nClients, primitiveType))
 	{
 		return 1;
