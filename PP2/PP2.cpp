@@ -1,15 +1,89 @@
 #include "stdafx.h"
 #include "Bank.h"
 #include "BankClient.h"
+#include <string>
+#include "CCriticalSection.h"
+#include "CEmptyPrimitive.h"
+#include "ISyncPrimitive.h"
+#include "CEvent.h"
+#include "CMutex.h"
+#include "CSemaphore.h"
+
+using namespace std;
 
 
-int main()
+void ShowUsageInfo()
 {
-	CBank* bank = new CBank();
-	CBankClient* client1 = bank->CreateClient();
-	CBankClient* client2 = bank->CreateClient();
+	cout << "Using: PP2.exe \"nClients\" \"syncPrimitive\"" << endl;
+	cout << "syncPrimitive is optional parameter. you can input:" << endl;
+	cout << "0 - for " << endl;
+	cout << "1 - critical section" << endl;
+	cout << "2 - mutex" << endl;
+	cout << "3 - semafor" << endl;
+	cout << "4 - event" << endl;
+}
 
-	bank->WaitForClients();
+ISyncPrimitive & CreatePrimitiveFromParam(size_t param)
+{
+	switch (param)
+	{
+	case 1:
+		return CCriticalSection();
+	case 2:
+		return CMutex();
+	case 3:
+		return CEvent();
+	default:
+		return CEmptyPrimitive();
+	}
+}
+
+bool HandleUserInput(int argc, char * argv[], size_t & nClients, size_t & primitiveType)
+{
+	if (argc > 3 || argc == 1 ||argc == 2 && argv[1] == "/?")
+	{
+		ShowUsageInfo();
+		return false;
+	}
+
+	if (argc == 2)
+	{
+
+		try
+		{
+			nClients = std::stoi(argv[1]);
+			if (nClients < 1 || nClients > 4)
+			{
+				throw std::invalid_argument("incorrect value of syncPrimitiveType");
+			}
+		}
+		catch (const std::exception & ex)
+		{
+			cout << ex.what() << endl;
+			return false;
+		}
+		return true;
+	}
+	return true;
+}
+
+int main(int argc, char * argv[])
+{	
+// 	argc = 3;
+// 	argv[1] = "3";
+// 	argv[2] = "2";
+	size_t nClients;
+	size_t primitiveType;
+	
+
+	if (!HandleUserInput(argc, argv, nClients, primitiveType))
+	{
+		return 1;
+	}
+
+	CBank bank(nClients, CreatePrimitiveFromParam(primitiveType));
+	
+	bank.WaitForClients();
 
     return 0;
 }

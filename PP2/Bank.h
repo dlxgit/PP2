@@ -1,13 +1,13 @@
 #pragma once
 #include <iostream>
 #include <vector>
-
 #include "BankClient.h"
+#include "ISyncPrimitive.h"
 
 class CBank
 {
 public:
-	CBank();
+	CBank(size_t nClients, ISyncPrimitive & primitive);
 	CBankClient* CreateClient();
 	void UpdateClientBalance(CBankClient& client, int value);
 	void WaitForClients();

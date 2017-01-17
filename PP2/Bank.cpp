@@ -1,9 +1,14 @@
 #include "Bank.h"
 
-CBank::CBank()
+CBank::CBank(size_t nClients)
 {
 	m_clients = std::vector<CBankClient>();
+	for (size_t i = 0; i < nClients; ++i)
+	{
+		CreateClient();
+	}
 	m_totalBalance = 0;
+	
 }
 
 void CBank::WaitForClients()
